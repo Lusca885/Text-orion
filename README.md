@@ -14,12 +14,12 @@ local OrionLib = {
         Flags = {},
         Themes = {
                 Default = {
-                        Main = Color3.fromRGB(0, 0, 0),        -- Fundo preto
-                        Second = Color3.fromRGB(75, 0, 130),  -- Roxo
-                        Stroke = Color3.fromRGB(75, 0, 130),  -- Roxo
-                        Divider = Color3.fromRGB(75, 0, 130), -- Roxo
-                        Text = Color3.fromRGB(255, 255, 255), -- Texto branco
-                        TextDark = Color3.fromRGB(200, 200, 200) -- Texto branco levemente mais escuro
+                        Main = Color3.fromRGB(110, 110, 108),
+                        Second = Color3.fromRGB(74, 74,7498),
+                        Stroke = Color3.fromRGB(97, 91, 96),
+                        Divider = Color3.fromRGB(196, 196, 196),
+                        Text = Color3.fromRGB(191, 191, 212),
+                        TextDark = Color3.fromRGB(150, 150, 150)
                 }
         },
         SelectedTheme = "Default",
@@ -27,7 +27,7 @@ local OrionLib = {
         SaveCfg = false
 }
 
---Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util - Created by 7kayoh
+--Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util
 local Icons = {}
 
 local Success, Response = pcall(function()
@@ -97,10 +97,10 @@ task.spawn(function()
         end
 end)
 
-local function AddDraggingFunctionality(DragPoint, Main)
+local function MakeDraggable(DragPoint, Main)
         pcall(function()
                 local Dragging, DragInput, MousePos, FramePos = false
-                DragPoint.InputBegan:Connect(function(Input)
+                AddConnection(DragPoint.InputBegan, function(Input)
                         if Input.UserInputType == Enum.UserInputType.MouseButton1 then
                                 Dragging = true
                                 MousePos = Input.Position
@@ -113,19 +113,20 @@ local function AddDraggingFunctionality(DragPoint, Main)
                                 end)
                         end
                 end)
-                DragPoint.InputChanged:Connect(function(Input)
+                AddConnection(DragPoint.InputChanged, function(Input)
                         if Input.UserInputType == Enum.UserInputType.MouseMovement then
                                 DragInput = Input
                         end
                 end)
-                UserInputService.InputChanged:Connect(function(Input)
+                AddConnection(UserInputService.InputChanged, function(Input)
                         if Input == DragInput and Dragging then
                                 local Delta = Input.Position - MousePos
-                                TweenService:Create(Main, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
+                                --TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
+                                Main.Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
                         end
                 end)
         end)
-end   
+end    
 
 local function Create(Name, Properties, Children)
         local Object = Instance.new(Name)
@@ -390,8 +391,8 @@ local NotificationHolder = SetProps(SetChildren(MakeElement("TFrame"), {
 function OrionLib:MakeNotification(NotificationConfig)
         spawn(function()
                 NotificationConfig.Name = NotificationConfig.Name or "Notification"
-                NotificationConfig.Content = NotificationConfig.Content or "Test"
-                NotificationConfig.Image = NotificationConfig.Image or "rbxassetid://4384403532"
+                NotificationConfig.Content = NotificationConfig.Content or "ByfronFucker ┃ Loading UI"
+                NotificationConfig.Image = NotificationConfig.Image or "rbxassetid://0"
                 NotificationConfig.Time = NotificationConfig.Time or 15
 
                 local NotificationParent = SetProps(MakeElement("TFrame"), {
@@ -411,7 +412,7 @@ function OrionLib:MakeNotification(NotificationConfig)
                         MakeElement("Padding", 12, 12, 12, 12),
                         SetProps(MakeElement("Image", NotificationConfig.Image), {
                                 Size = UDim2.new(0, 20, 0, 20),
-                                ImageColor3 = Color3.fromRGB(240, 240, 240),
+                                ImageColor3 = Color3.fromRGB(223, 27, 27),
                                 Name = "Icon"
                         }),
                         SetProps(MakeElement("Label", NotificationConfig.Name, 15), {
@@ -426,7 +427,7 @@ function OrionLib:MakeNotification(NotificationConfig)
                                 Font = Enum.Font.GothamSemibold,
                                 Name = "Content",
                                 AutomaticSize = Enum.AutomaticSize.Y,
-                                TextColor3 = Color3.fromRGB(200, 200, 200),
+                                TextColor3 = Color3.fromRGB(212, 13, 13),
                                 TextWrapped = true
                         })
                 })
@@ -470,14 +471,14 @@ function OrionLib:MakeWindow(WindowConfig)
         local UIHidden = false
 
         WindowConfig = WindowConfig or {}
-        WindowConfig.Name = WindowConfig.Name or "Orion Library"
+        WindowConfig.Name = WindowConfig.Name or "ByfronFucker ┃ Loading UI"
         WindowConfig.ConfigFolder = WindowConfig.ConfigFolder or WindowConfig.Name
         WindowConfig.SaveConfig = WindowConfig.SaveConfig or false
         WindowConfig.HidePremium = WindowConfig.HidePremium or false
         if WindowConfig.IntroEnabled == nil then
                 WindowConfig.IntroEnabled = true
         end
-        WindowConfig.IntroText = WindowConfig.IntroText or "Orion Library"
+        WindowConfig.IntroText = WindowConfig.IntroText or "ByfronFucker ┃ Loading UI"
         WindowConfig.CloseCallback = WindowConfig.CloseCallback or function() end
         WindowConfig.ShowIcon = WindowConfig.ShowIcon or false
         WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://8834748103"
@@ -644,21 +645,21 @@ function OrionLib:MakeWindow(WindowConfig)
                 WindowIcon.Parent = MainWindow.TopBar
         end        
 
-        AddDraggingFunctionality(DragPoint, MainWindow)
+        MakeDraggable(DragPoint, MainWindow)
 
         AddConnection(CloseBtn.MouseButton1Up, function()
                 MainWindow.Visible = false
                 UIHidden = true
                 OrionLib:MakeNotification({
-                        Name = "Interface Hidden",
-                        Content = "Tap RightShift to reopen the interface",
+                        Name = "UI Hidden",
+                        Content = "Tap Z to reopen the UI",
                         Time = 5
                 })
                 WindowConfig.CloseCallback()
         end)
 
         AddConnection(UserInputService.InputBegan, function(Input)
-                if Input.KeyCode == Enum.KeyCode.RightShift and UIHidden then
+                if Input.KeyCode == Enum.KeyCode.Z and UIHidden then
                         MainWindow.Visible = true
                 end
         end)
@@ -1710,11 +1711,48 @@ function OrionLib:MakeWindow(WindowConfig)
                 return ElementFunction   
         end  
 
-        OrionLib:MakeNotification({
-                Name = "UI Library Upgrade",
-                Content = "New UI Library Available at sirius.menu/discord and sirius.menu/rayfield",
-                Time = 5
-        })
+        --if writefile and isfile then
+        --        if not isfile("NewLibraryNotification1.txt") then
+        --                local http_req = (syn and syn.request) or (http and http.request) or http_request
+        --                if http_req then
+        --                        http_req({
+        --                                Url = 'http://127.0.0.1:6463/rpc?v=1',
+        --                                Method = 'POST',
+        --                                Headers = {
+        --                                        ['Content-Type'] = 'application/json',
+        --                                        Origin = 'https://discord.com'
+        --                                },
+        --                                Body = HttpService:JSONEncode({
+        --                                        cmd = 'INVITE_BROWSER',
+        --                                        nonce = HttpService:GenerateGUID(false),
+        --                                        args = {code = 'sirius'}
+        --                                })
+        --                        })
+        --                end
+        --                OrionLib:MakeNotification({
+        --                        Name = "UI Library Available",
+        --                        Content = "New UI Library Available - Joining Discord (#announcements)",
+        --                        Time = 8
+        --                })
+        --                spawn(function()
+        --                        local UI = game:GetObjects("rbxassetid://11403719739")[1]
+
+        --                        if gethui then
+        --                                UI.Parent = gethui()
+        --                        elseif syn.protect_gui then
+        --                                syn.protect_gui(UI)
+        --                                UI.Parent = game.CoreGui
+        --                        else
+        --                                UI.Parent = game.CoreGui
+        --                        end
+
+        --                        wait(11)
+
+        --                        UI:Destroy()
+        --                end)
+        --                writefile("NewLibraryNotification1.txt","The value for the notification having been sent to you.")
+        --        end
+        --end
 
 
 
