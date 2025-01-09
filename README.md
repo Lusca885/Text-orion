@@ -140,7 +140,7 @@ function OrionLib:MakeNotification(NotificationConfig) spawn(function() Notifica
                     MakeElement("Padding", 12, 12, 12, 12),
                     SetProps(MakeElement("Image", NotificationConfig.Image), {
                             Size = UDim2.new(0, 20, 0, 20),
-                            ImageColor3 = Color3.fromRGB(0, 0, 139),
+                            ImageColor3 = Color3.fromRGB(240, 240, 240),
                             Name = "Icon"
                     }),
                     SetProps(MakeElement("Label", NotificationConfig.Name, 15), {
@@ -206,7 +206,7 @@ function OrionLib:MakeWindow(WindowConfig) local FirstTab = true local Minimized
             end        
     end
 
-    local TabHolder = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(0, 0, 139), 4), {
+    local TabHolder = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 4), {
             Size = UDim2.new(1, 0, 1, -50)
     }), {
             MakeElement("List"),
