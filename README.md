@@ -1,3 +1,5 @@
+
+
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -12,29 +14,13 @@ local OrionLib = {
         Flags = {},
         Themes = {
                 Default = {
-                        Main = Color3.fromRGB(24, 24, 24),
-                        Second = Color3.fromRGB(32, 32, 32),
-                        Stroke = Color3.fromRGB(60, 60, 60),
-                        Divider = Color3.fromRGB(60, 60, 60),
-                        Text = Color3.fromRGB(240, 240, 240),
-                        TextDark = Color3.fromRGB(150, 150, 150)
-                },
-                Dark = {
-                        Main = Color3.fromRGB(0, 0, 0),
-                        Second = Color3.fromRGB(0, 0, 0),
-                        Stroke = Color3.fromRGB(255, 255, 255),
-                        Divider = Color3.fromRGB(255, 255, 255),
-                        Text = Color3.fromRGB(240, 240, 240),
-                        TextDark = Color3.fromRGB(150, 150, 150)
-                },
-                ByteHub = {
-                        Main = Color3.fromRGB(184, 28, 28),
-                        Second = Color3.fromRGB(219, 48, 48),
-                        Stroke = Color3.fromRGB(232, 97, 97),
-                        Divider = Color3.fromRGB(232, 97, 97),
-                        Text = Color3.fromRGB(240, 240, 240),
-                        TextDark = Color3.fromRGB(150, 150, 150)
-                },
+                        Main = Color3.fromRGB(0, 0, 0),        -- Fundo preto
+                        Second = Color3.fromRGB(75, 0, 130),  -- Roxo
+                        Stroke = Color3.fromRGB(75, 0, 130),  -- Roxo
+                        Divider = Color3.fromRGB(75, 0, 130), -- Roxo
+                        Text = Color3.fromRGB(255, 255, 255), -- Texto branco
+                        TextDark = Color3.fromRGB(200, 200, 200) -- Texto branco levemente mais escuro
+                }
         },
         SelectedTheme = "Default",
         Folder = nil,
