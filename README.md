@@ -129,7 +129,7 @@ function OrionLib:MakeNotification(NotificationConfig) spawn(function() Notifica
                     Parent = NotificationHolder
             })
 
-            local NotificationFrame = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 10), {
+            local NotificationFrame = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(25, 25, 25), 0, 10), {
                     Parent = NotificationParent, 
                     Size = UDim2.new(1, 0, 0, 0),
                     Position = UDim2.new(1, -55, 0, 0),
