@@ -1,5 +1,3 @@
-
-
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -14,12 +12,12 @@ local OrionLib = {
         Flags = {},
         Themes = {
                 Default = {
-                        Main = Color3.fromRGB(127, 251, 111),
-                        Second = Color3.fromRGB(122, 251, 122),
-                        Stroke = Color3.fromRGB(121, 155, 133),
-                        Divider = Color3.fromRGB(128, 215, 144),
-                        Text = Color3.fromRGB(129, 155, 155),
-                        TextDark = Color3.fromRGB(124, 155, 166)
+                        Main = Color3.fromRGB(0, 0, 0),
+                        Second = Color3.fromRGB(0, 0, 0),
+                        Stroke = Color3.fromRGB(255, 255, 255),
+                        Divider = Color3.fromRGB(255, 255, 255),
+                        Text = Color3.fromRGB(255, 255, 255),
+                        TextDark = Color3.fromRGB(255, 255, 255)
                 }
         },
         SelectedTheme = "Default",
@@ -101,7 +99,7 @@ local function MakeDraggable(DragPoint, Main)
         pcall(function()
                 local Dragging, DragInput, MousePos, FramePos = false
                 AddConnection(DragPoint.InputBegan, function(Input)
-                        if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
                                 Dragging = true
                                 MousePos = Input.Position
                                 FramePos = Main.Position
@@ -114,14 +112,14 @@ local function MakeDraggable(DragPoint, Main)
                         end
                 end)
                 AddConnection(DragPoint.InputChanged, function(Input)
-                        if Input.UserInputType == Enum.UserInputType.MouseMovement then
+                        if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
                                 DragInput = Input
                         end
                 end)
                 AddConnection(UserInputService.InputChanged, function(Input)
                         if Input == DragInput and Dragging then
                                 local Delta = Input.Position - MousePos
-                                --TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
+                                TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
                                 Main.Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
                         end
                 end)
@@ -244,7 +242,7 @@ local function SaveCfg(Name)
         writefile(OrionLib.Folder .. "/" .. Name .. ".txt", tostring(HttpService:JSONEncode(Data)))
 end
 
-local WhitelistedMouse = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2,Enum.UserInputType.MouseButton3}
+local WhitelistedMouse = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2,Enum.UserInputType.MouseButton3,Enum.UserInputType.Touch}
 local BlacklistedKeys = {Enum.KeyCode.Unknown,Enum.KeyCode.W,Enum.KeyCode.A,Enum.KeyCode.S,Enum.KeyCode.D,Enum.KeyCode.Up,Enum.KeyCode.Left,Enum.KeyCode.Down,Enum.KeyCode.Right,Enum.KeyCode.Slash,Enum.KeyCode.Tab,Enum.KeyCode.Backspace,Enum.KeyCode.Escape}
 
 local function CheckKey(Table, Key)
@@ -264,7 +262,7 @@ end)
 
 CreateElement("Stroke", function(Color, Thickness)
         local Stroke = Create("UIStroke", {
-                Color = Color or Color3.fromRGB(123, 255, 247),
+                Color = Color or Color3.fromRGB(255, 255, 255),
                 Thickness = Thickness or 1
         })
         return Stroke
@@ -297,7 +295,7 @@ end)
 
 CreateElement("Frame", function(Color)
         local Frame = Create("Frame", {
-                BackgroundColor3 = Color or Color3.fromRGB(123, 255, 247),
+                BackgroundColor3 = Color or Color3.fromRGB(255, 255, 255),
                 BorderSizePixel = 0
         })
         return Frame
@@ -305,7 +303,7 @@ end)
 
 CreateElement("RoundFrame", function(Color, Scale, Offset)
         local Frame = Create("Frame", {
-                BackgroundColor3 = Color or Color3.fromRGB(123, 255, 247),
+                BackgroundColor3 = Color or Color3.fromRGB(255, 255, 255),
                 BorderSizePixel = 0
         }, {
                 Create("UICorner", {
@@ -366,7 +364,7 @@ CreateElement("Label", function(Text, TextSize, Transparency)
                 TextColor3 = Color3.fromRGB(240, 240, 240),
                 TextTransparency = Transparency or 0,
                 TextSize = TextSize or 15,
-                Font = Enum.Font.Gotham,
+                Font = Enum.Font.Roboto,
                 RichText = true,
                 BackgroundTransparency = 1,
                 TextXAlignment = Enum.TextXAlignment.Left
@@ -651,8 +649,8 @@ function OrionLib:MakeWindow(WindowConfig)
                 MainWindow.Visible = false
                 UIHidden = true
                 OrionLib:MakeNotification({
-                        Name = "界面隐藏☁️",
-                        Content = "点击右移至reopen界面",
+                        Name = "Interface Hidden",
+                        Content = "Tap RightShift to reopen the interface",
                         Time = 5
                 })
                 WindowConfig.CloseCallback()
@@ -1001,7 +999,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                 SliderConfig.Default = SliderConfig.Default or 50
                                 SliderConfig.Callback = SliderConfig.Callback or function() end
                                 SliderConfig.ValueName = SliderConfig.ValueName or ""
-                                SliderConfig.Color = SliderConfig.Color or Color3.fromRGB(255, 255, 255)
+                                SliderConfig.Color = SliderConfig.Color or Color3.fromRGB(9, 149, 98)
                                 SliderConfig.Flag = SliderConfig.Flag or nil
                                 SliderConfig.Save = SliderConfig.Save or false
 
@@ -1055,19 +1053,19 @@ function OrionLib:MakeWindow(WindowConfig)
                                 }), "Second")
 
                                 SliderBar.InputBegan:Connect(function(Input)
-                                        if Input.UserInputType == Enum.UserInputType.MouseButton1 then 
+                                        if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then 
                                                 Dragging = true 
                                         end 
                                 end)
                                 SliderBar.InputEnded:Connect(function(Input) 
-                                        if Input.UserInputType == Enum.UserInputType.MouseButton1 then 
+                                        if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then 
                                                 Dragging = false 
                                         end 
                                 end)
 
                                 UserInputService.InputChanged:Connect(function(Input)
-                                        if Dragging and Input.UserInputType == Enum.UserInputType.MouseMovement then 
-                                                local SizeScale = math.clamp((Input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
+                                        if Dragging then 
+                                                local SizeScale = math.clamp((Mouse.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
                                                 Slider:Set(SliderConfig.Min + ((SliderConfig.Max - SliderConfig.Min) * SizeScale)) 
                                                 SaveCfg(game.GameId)
                                         end
@@ -1105,7 +1103,7 @@ function OrionLib:MakeWindow(WindowConfig)
 
                                 local DropdownList = MakeElement("List")
 
-                                local DropdownContainer = AddThemeObject(SetProps(SetChildren(MakeElement("ScrollFrame", Color3.fromRGB(255, 10, 10), 4), {
+                                local DropdownContainer = AddThemeObject(SetProps(SetChildren(MakeElement("ScrollFrame", Color3.fromRGB(40, 40, 40), 4), {
                                         DropdownList
                                 }), {
                                         Parent = ItemParent,
@@ -1118,7 +1116,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                         Size = UDim2.new(1, 0, 1, 0)
                                 })
 
-                                local DropdownFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(123, 255, 247), 0, 5), {
+                                local DropdownFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 5), {
                                         Size = UDim2.new(1, 0, 0, 38),
                                         Parent = ItemParent,
                                         ClipsDescendants = true
@@ -1292,7 +1290,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                 end)
 
                                 AddConnection(Click.InputEnded, function(Input)
-                                        if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+                                        if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
                                                 if Bind.Binding then return end
                                                 Bind.Binding = true
                                                 BindBox.Value.Text = ""
@@ -1378,8 +1376,8 @@ function OrionLib:MakeWindow(WindowConfig)
                                 local TextboxActual = AddThemeObject(Create("TextBox", {
                                         Size = UDim2.new(1, 0, 1, 0),
                                         BackgroundTransparency = 1,
-                                        TextColor3 = Color3.fromRGB(123, 255, 247),
-                                        PlaceholderColor3 = Color3.fromRGB(123, 255, 247),
+                                        TextColor3 = Color3.fromRGB(255, 255, 255),
+                                        PlaceholderColor3 = Color3.fromRGB(210,210,210),
                                         PlaceholderText = "Input",
                                         Font = Enum.Font.GothamSemibold,
                                         TextXAlignment = Enum.TextXAlignment.Center,
@@ -1387,7 +1385,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                         ClearTextOnFocus = false
                                 }), "Text")
 
-                                local TextContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(123, 255, 247), 0, 4), {
+                                local TextContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 4), {
                                         Size = UDim2.new(0, 24, 0, 24),
                                         Position = UDim2.new(1, -12, 0.5, 0),
                                         AnchorPoint = Vector2.new(1, 0.5)
@@ -1397,7 +1395,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                 }), "Main")
 
 
-                                local TextboxFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(123, 255, 247), 0, 5), {
+                                local TextboxFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 5), {
                                         Size = UDim2.new(1, 0, 0, 38),
                                         Parent = ItemParent
                                 }), {
@@ -1446,7 +1444,7 @@ function OrionLib:MakeWindow(WindowConfig)
                         function ElementFunction:AddColorpicker(ColorpickerConfig)
                                 ColorpickerConfig = ColorpickerConfig or {}
                                 ColorpickerConfig.Name = ColorpickerConfig.Name or "Colorpicker"
-                                ColorpickerConfig.Default = ColorpickerConfig.Default or Color3.fromRGB(123, 255, 247)
+                                ColorpickerConfig.Default = ColorpickerConfig.Default or Color3.fromRGB(255,255,255)
                                 ColorpickerConfig.Callback = ColorpickerConfig.Callback or function() end
                                 ColorpickerConfig.Flag = ColorpickerConfig.Flag or nil
                                 ColorpickerConfig.Save = ColorpickerConfig.Save or false
@@ -1486,7 +1484,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                         Position = UDim2.new(1, -20, 0, 0),
                                         Visible = false
                                 }, {
-                                        Create("UIGradient", {Rotation = 270, Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(123, 255, 247)), ColorSequenceKeypoint.new(0.20, Color3.fromRGB(123, 255, 247)), ColorSequenceKeypoint.new(0.40, Color3.fromRGB(123, 255, 247)), ColorSequenceKeypoint.new(0.60, Color3.fromRGB(123, 255, 247)), ColorSequenceKeypoint.new(0.80, Color3.fromRGB(0, 17, 255)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(123, 255, 247)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(123, 255, 247))},}),
+                                        Create("UIGradient", {Rotation = 270, Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)), ColorSequenceKeypoint.new(0.20, Color3.fromRGB(234, 255, 0)), ColorSequenceKeypoint.new(0.40, Color3.fromRGB(21, 255, 0)), ColorSequenceKeypoint.new(0.60, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.80, Color3.fromRGB(0, 17, 255)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 251)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 4))},}),
                                         Create("UICorner", {CornerRadius = UDim.new(0, 5)}),
                                         HueSelection
                                 })
@@ -1511,7 +1509,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                         Size = UDim2.new(1, 0, 1, 0)
                                 })
 
-                                local ColorpickerBox = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(123, 255, 247), 0, 4), {
+                                local ColorpickerBox = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 4), {
                                         Size = UDim2.new(0, 24, 0, 24),
                                         Position = UDim2.new(1, -12, 0.5, 0),
                                         AnchorPoint = Vector2.new(1, 0.5)
@@ -1519,7 +1517,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                         AddThemeObject(MakeElement("Stroke"), "Stroke")
                                 }), "Main")
 
-                                local ColorpickerFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(123, 255, 247), 0, 5), {
+                                local ColorpickerFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 5), {
                                         Size = UDim2.new(1, 0, 0, 38),
                                         Parent = ItemParent
                                 }), {
@@ -1568,7 +1566,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                 ColorV = 1 - (math.clamp(ColorSelection.AbsolutePosition.Y - Color.AbsolutePosition.Y, 0, Color.AbsoluteSize.Y) / Color.AbsoluteSize.Y)
 
                                 AddConnection(Color.InputBegan, function(input)
-                                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                                                 if ColorInput then
                                                         ColorInput:Disconnect()
                                                 end
@@ -1584,7 +1582,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                 end)
 
                                 AddConnection(Color.InputEnded, function(input)
-                                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                                                 if ColorInput then
                                                         ColorInput:Disconnect()
                                                 end
@@ -1592,7 +1590,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                 end)
 
                                 AddConnection(Hue.InputBegan, function(input)
-                                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                                                 if HueInput then
                                                         HueInput:Disconnect()
                                                 end;
@@ -1609,7 +1607,7 @@ function OrionLib:MakeWindow(WindowConfig)
                                 end)
 
                                 AddConnection(Hue.InputEnded, function(input)
-                                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                                                 if HueInput then
                                                         HueInput:Disconnect()
                                                 end
@@ -1753,8 +1751,6 @@ function OrionLib:MakeWindow(WindowConfig)
         --                writefile("NewLibraryNotification1.txt","The value for the notification having been sent to you.")
         --        end
         --end
-
-
 
         return TabFunction
 end   
