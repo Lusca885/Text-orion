@@ -418,7 +418,7 @@ function OrionLib:MakeNotification(NotificationConfig)
 				Position = UDim2.new(0, 30, 0, 0),
 				Font = Enum.Font.GothamBold,
 				Name = "Title",
-				TextColor3 = Color3.fromRGB(247, 2, 2)  -- Cor da legenda (título)
+				TextColor3 = Color3.fromRGB(255, 255, 255)  -- Cor da legenda (título)
 			}),
 			SetProps(MakeElement("Label", NotificationConfig.Content, 14), {
 				Size = UDim2.new(1, 0, 0, 0),
@@ -426,7 +426,7 @@ function OrionLib:MakeNotification(NotificationConfig)
 				Font = Enum.Font.GothamSemibold,
 				Name = "Content",
 				AutomaticSize = Enum.AutomaticSize.Y,
-				TextColor3 = Color3.fromRGB(247, 2, 2),  -- Cor do conteúdo
+				TextColor3 = Color3.fromRGB(255, 255, 255),  -- Cor do conteúdo
 				TextWrapped = true
 			})
 		})
