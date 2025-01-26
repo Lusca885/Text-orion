@@ -701,7 +701,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.new(0.5, 0, 0.4, 0),
 			Size = UDim2.new(0, 28, 0, 28),
-			ImageColor3 = Color3.fromRGB(0, 255, 255
+			ImageColor3 = Color3.fromRGB(187, 134, 252
 
 ),
 			ImageTransparency = 1
