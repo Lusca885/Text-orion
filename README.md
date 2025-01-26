@@ -14,16 +14,16 @@ local OrionLib = {
 		Default = {
 			Main = Color3.fromRGB(0, 0, 0),
 			Second = Color3.fromRGB(0, 0, 0),
-			Stroke = Color3.fromRGB(0, 188, 212
+			Stroke = Color3.fromRGB(187, 134, 252
 
 ),
-			Divider = Color3.fromRGB(0, 188, 212
+			Divider = Color3.fromRGB(187, 134, 252
 
 ),
-			Text = Color3.fromRGB(0, 188, 212
+			Text = Color3.fromRGB(187, 134, 252
 
 ),
-			TextDark = Color3.fromRGB(0, 188, 212
+			TextDark = Color3.fromRGB(187, 134, 252
 
 )
 		}
